@@ -1,11 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/screens/forgot_password_verify_email_screen.dart';
+import 'package:task_manager/ui/screens/main_nav_bar_holder_screen.dart';
 import 'package:task_manager/ui/screens/sign_up_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  static const String name = '/login';
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -46,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: _onTapLoginButton,
                     child: Icon(Icons.arrow_circle_right_outlined),
                   ),
                   const SizedBox(height: 36),
@@ -102,6 +105,14 @@ class _LoginScreenState extends State<LoginScreen> {
       MaterialPageRoute(
         builder: (context) => ForgotPasswordVerifyEmailScreen(),
       ),
+    );
+  }
+
+  void _onTapLoginButton() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      MainNavBarHolderScreen.name,
+      (predicate) => false,
     );
   }
 
