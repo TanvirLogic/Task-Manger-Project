@@ -5,14 +5,18 @@ import 'package:logger/logger.dart';
 
 class ApiCaller {
   static final Logger _logger = Logger();
-
+  /// Q1. Future<ApiResponse> means with a basic example
+  /// Q2. ApiResponse access ?
+  // Q3. Using same dart file
   static Future<ApiResponse> getRequest({required String url}) async {
     try {
+      /// www.ostad.apput8093n b yt
+      ///
       Uri uri = Uri.parse(url);
 
-      _logRequest(url);
+     // _logRequest(url);
       Response response = await get(uri);
-      _logResponse(url, response);
+    //  _logResponse(url, response);
 
       final int statusCode = response.statusCode;
 
@@ -31,6 +35,7 @@ class ApiCaller {
           isSuccess: false,
           responseCode: statusCode,
           responseData: decodedData,
+          errorMessage: decodedData['data'],
         );
       }
     } on Exception catch (e) {
@@ -51,7 +56,10 @@ class ApiCaller {
       Uri uri = Uri.parse(url);
 
       _logRequest(url, body: body);
-      Response response = await post(uri);
+      Response response = await post(uri,
+          headers: {'content-type': 'application/json'},
+          body: jsonEncode(body),
+      );
       _logResponse(url, response);
 
       final int statusCode = response.statusCode;
@@ -71,6 +79,7 @@ class ApiCaller {
           isSuccess: false,
           responseCode: statusCode,
           responseData: decodedData,
+          errorMessage: decodedData['data'],
         );
       }
     } on Exception catch (e) {
@@ -86,29 +95,29 @@ class ApiCaller {
   static void _logRequest(String url, {Map<String, dynamic>? body}) {
     _logger.i(
       'URL => $url\n'
-          'Request Body: $body',
+      'Request Body: $body',
     );
   }
 
   static void _logResponse(String url, Response response) {
     _logger.i(
       'URL => $url\n'
-          'Status Code: ${response.statusCode}\n'
-          'Body: ${response.body}',
+      'Status Code: ${response.statusCode}\n'
+      'Body: ${response.body}',
     );
   }
 }
 
 class ApiResponse {
-  final bool isSuccess;
-  final int responseCode;
-  final dynamic responseData;
-  final String? errorMessage;
+final bool isSuccess;
+final int responseCode;
+final dynamic responseData;
+final String? errorMessage;
 
-  ApiResponse({
-    required this.isSuccess,
-    required this.responseCode,
-    required this.responseData,
-    this.errorMessage = 'Something went wrong',
-  });
+ApiResponse({
+  required this.isSuccess,
+  required this.responseCode,
+  required this.responseData,
+  this.errorMessage = 'Something went wrong',
+});
 }
